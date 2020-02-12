@@ -153,9 +153,19 @@ The stage should look something like this:
 To onboard a new repo to SonarCloud:
 
 - Go to https://sonarcloud.io/organizations/open-cluster-management/projects
+
+If the project is not in the list:
+- Click the "+" in the top right and select "Analyze new project"
+- Check the box next to the repo in the list. If the repo is not here, verify it is present in GitHub.
+- Click "Set Up" on the right side of the page to add the repo as a SonarCloud project.
+
+Once the project is in the list:
 - Find the project in the list and click "Configure Analysis"
 - Click the "With Travis CI" link
-- Copy the `travis encrypt a1b2c3d4` command shown and run it to generate an encrypted token. Save this token.
+- Copy the `travis encrypt a1b2c3d4` command shown.
+- Paste the command in the command line and add the option `-r open-cluster-management/<repo-name>`
+- Example: `travis encrypt -r open-cluster-management/grc-ui a1b2c3d4`
+- Run the command to generate an encrypted token and save this token.
 - Click the "Continue" link.
 - Under "What is your build technology?" click "Other".
 - Click "Continue"
