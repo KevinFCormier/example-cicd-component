@@ -1,0 +1,7 @@
+sonar.projectKey=PROJECT_KEY
+sonar.projectName=PROJECT_NAME
+sonar.sources=.
+sonar.exclusions=tests/**/*,test-output/**/*,node_modules/**/*
+sonar.tests=tests
+sonar.javascript.lcov.reportPaths=test-output/coverage/lcov.info
+sonar.testExecutionReportPaths=test-report.xml

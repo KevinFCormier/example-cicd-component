@@ -115,13 +115,52 @@ The stage should look something like this:
 
 Note that this repo is a python project and so its unit-test stage has the `sonar-scanner --debug` line as the last statement in the script. Be sure to remove this line for a Go project as it's part of the make sonar/go recipe.
 
-### Node Project
+### Node Project With Jest
 
-Coming Soon...
+For a Node project that uses Jest for testing, create a `sonar-project.properties` file at the top of the repo using this template:
+
+    sonar.projectKey=PROJECT_KEY
+    sonar.projectName=PROJECT_NAME
+    sonar.sources=.
+    sonar.exclusions=tests/**/*,test-output/**/*,node_modules/**/*
+    sonar.tests=tests
+    sonar.javascript.lcov.reportPaths=test-output/coverage/lcov.info
+    sonar.testExecutionReportPaths=test-report.xml
+
+This template is in this repo as the file `sonar-project.properties.js-jest.example`.
+
+Next, in the `jest.config.js` file, add this line to the JS object being stored as `const jestConfig`:
+
+    testResultsProcessor: 'jest-sonar-reporter',
+
+Finally, in the `.travis.yml` file, add this line to the script in the `unit-test`
+stage just after `make component/test/unit` to install the jest-sonar-reporter module:
+
+    make sonar/js/jest-init
+
+and this line to the end of the script in the `unit-test` stage:
+
+    make sonar/js
+
+The stage should look something like this:
+
+    - stage: unit-test
+      name: "Run unit tests"
+      if: type = pull_request
+      script:
+        # Set the image tag differently for PRs
+        - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then export COMPONENT_TAG_EXTENSION="-PR${TRAVIS_PULL_REQUEST}-${TRAVIS_COMMIT}"; fi;
+        # Bootstrap the build harness, pull test image, and run unit tests.
+        - |
+          make
+          make component/pull
+          make sonar/js/jest-init
+          make component/test/unit
+          make sonar/js
 
 ### Other Projects
 
-For a project that is not Go or Node based, create a `sonar-project.properties` file at the top of the repo using this template:
+For a project that is not covered above, create a `sonar-project.properties` file at the top of the repo using this template:
 
     sonar.projectKey=PROJECT_KEY
     sonar.projectName=PROJECT_NAME
@@ -155,11 +194,13 @@ To onboard a new repo to SonarCloud:
 - Go to https://sonarcloud.io/organizations/open-cluster-management/projects
 
 If the project is not in the list:
+
 - Click the "+" in the top right and select "Analyze new project"
 - Check the box next to the repo in the list. If the repo is not here, verify it is present in GitHub.
 - Click "Set Up" on the right side of the page to add the repo as a SonarCloud project.
 
 Once the project is in the list:
+
 - Find the project in the list and click "Configure Analysis"
 - Click the "With Travis CI" link
 - Copy the `travis encrypt a1b2c3d4` command shown.
