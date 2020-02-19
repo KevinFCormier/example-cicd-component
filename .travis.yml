@@ -35,14 +35,14 @@ stages:
 jobs:
   include:
     - stage: build
-      name: "Build the test image, push it and check image security scan status"
+      name: "Build the test image, push it, check potential leaked credentials and check image security scan status"
       script:
         - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then export COMPONENT_TAG_EXTENSION="-PR${TRAVIS_PULL_REQUEST}-${TRAVIS_COMMIT}"; fi;
         - |
           make
           make component/build
           make component/push
-          make imagescan/status
+          make security/scans
     - stage: unit-test
       name: "Run unit tests"
       if: type = pull_request
