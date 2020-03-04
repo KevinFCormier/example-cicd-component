@@ -303,4 +303,4 @@ You need to properly set the following environment variables under "Settings" fo
 
 # Conclusion
 
-If you've made it this far, your component should now be prepared for the CICD pipeline.  You can verify your `.travis.yml` using the [`travis` CLI's linter](https://support.travis-ci.com/hc/en-us/articles/115002904174-Validating-travis-yml-files). Then its time to start up your Travis job and try it out.  Contact CICD at #acm-devops in CoreOS Slack with any questions.
+If you've made it this far, your component should now be prepared for the CICD pipeline.  You can verify your `.travis.yml` using the [`travis` CLI's linter](https://support.travis-ci.com/hc/en-us/articles/115002904174-Validating-travis-yml-files). Then its time to start up your Travis job and try it out. Contact CICD at #acm-devops in CoreOS Slack with any questions.
